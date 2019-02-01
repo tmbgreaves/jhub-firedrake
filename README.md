@@ -1,10 +1,10 @@
 ## Configuration for setting up a firedrake jhub demonstrator
 
-# Dockerfile.singleuser
+* Dockerfile.singleuser
 
 This Dockerfile builds a single-user session image from the scipy notebook base image, installing firedrake and setting up an ipython/jhub kernel which is available to select in the user session.
 
-# deploy.sh
+* deploy.sh
 
 This script is run from a command line with azure and kubernetes command line tools available. It assumes that the session is already logged in to azure, and has the correct subscription selected. 
 
