@@ -7,7 +7,6 @@ export azureRegion="westeurope"
 export costCentre=project
 export Owner=username
 export Creator=username
-export Purpose="Reason for this resource existing"
 
 az ad sp create-for-rbac --skip-assignment >> sp.out
 
@@ -18,7 +17,7 @@ export clientSecret=`grep password sp.out | awk -F\" '{print $4}'`
 
 export resourceGroup=${myName}
 
-az group create --name=${myName} --location=${azureRegion} --tags costCentre=${costCentre} Owner=${Owner} Creator=${Creator} Purpose=${Purpose} --output table >> resgroup.out
+az group create --name=${myName} --location=${azureRegion} --tags costCentre=${costCentre} Owner=${Owner} Creator=${Creator} --output table >> resgroup.out
 cat resgroup.out
 
 export aksNodeCount=3
@@ -29,7 +28,7 @@ cat aksCreate.out
 
 export existingTags=$(az group show --name MC_${myName}_${myName}_${azureRegion} --query tags | tr -d '"{},' | sed 's/: /=/g')
 
-az group update --tags ${existingTags} costCentre=${costCentre} Owner=${Owner} Creator=${Creator} Purpose=${Purpose} --name MC_${myName}_${myName}_${azureRegion} >> newtags.out
+az group update --tags ${existingTags} costCentre=${costCentre} Owner=${Owner} Creator=${Creator} --name MC_${myName}_${myName}_${azureRegion} >> newtags.out
 cat newtags.out
 
 rm -rf ~/.kube/ 
