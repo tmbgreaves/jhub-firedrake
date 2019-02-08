@@ -3,6 +3,12 @@
 export myName="jhub-firedrake"
 export azureRegion="westeurope"
 
+# Tagging for Azure resource group
+export costCentre=project
+export Owner=username
+export Creator=username
+export Purpose="Reason for this resource existing"
+
 az ad sp create-for-rbac --skip-assignment >> sp.out
 
 cat sp.out
@@ -12,7 +18,7 @@ export clientSecret=`grep password sp.out | awk -F\" '{print $4}'`
 
 export resourceGroup=${myName}
 
-az group create --name=${myName} --location=${azureRegion} --output table >> resgroup.out
+az group create --name=${myName} --location=${azureRegion} --tags costCentre=${costCentre} Owner=${Owner} Creator=${Creator} Purpose=${Purpose} --output table >> resgroup.out
 cat resgroup.out
 
 export aksNodeCount=3
