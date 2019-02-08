@@ -27,6 +27,11 @@ export kubernetesVersion=1.11.5
 az aks create --resource-group ${myName} --name ${myName} --node-count ${aksNodeCount} --kubernetes-version ${kubernetesVersion} --service-principal ${servicePrincipal} --client-secret ${clientSecret} --generate-ssh-keys >> aksCreate.out
 cat aksCreate.out
 
+export existingTags=$(az group show --name MC_${myName}_${myName}_${azureRegion} --query tags | tr -d '"{},' | sed 's/: /=/g')
+
+az group update --tags ${existingTags} costCentre=${costCentre} Owner=${Owner} Creator=${Creator} Purpose=${Purpose} --name MC_${myName}_${myName}_${azureRegion} >> newtags.out
+cat newtags.out
+
 rm -rf ~/.kube/ 
 
 az aks get-credentials --resource-group ${myName} --name ${myName}
