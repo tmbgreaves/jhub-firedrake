@@ -88,8 +88,13 @@ singleuser:
   storage:
     type: none" > jhub-config.yaml
 
+# Pause for tiller to initialise
+while [[ ! $(kubectl --namespace kube-system get pods | grep tiller-deploy | grep Running) ]] ; do echo -n $(date) ; echo " Waiting for Tiller to initialise" ; sleep 10 ; done
 
 helm upgrade --install jupyterhub jupyterhub/jupyterhub --namespace jupyterhub --version 0.7.0   --values jhub-config.yaml
+
+# Pause for public IP to initialise
+while [[ ! $(az network public-ip list --resource-group MC_${myName}_${myName}_${azureRegion} --output table | awk 'NF' ) ]] ; do echo -n $(date) ; echo " Waiting for public IP" ; sleep 10 ; done
 
 export ipAddress=$(az network public-ip list --resource-group MC_${myName}_${myName}_${azureRegion} | grep ipAddress | awk -F\" '{print $4}')
 export ipName=$(az network public-ip list --query "[?ipAddress!=null]|[?contains(ipAddress, '${ipAddress}')].[name]" --output tsv | uniq)
