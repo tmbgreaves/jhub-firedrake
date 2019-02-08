@@ -84,7 +84,7 @@ auth:
 singleuser:
   image:
     name: tmbgreaves/jupyterhub-k8s
-    tag: 'firedrakeSingleUser20190207-000'
+    tag: 'firedrakeSingleUser20190208-000'
   storage:
     type: none" > jhub-config.yaml
 
