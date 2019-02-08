@@ -74,7 +74,10 @@ auth:
 singleuser:
   image:
     name: tmbgreaves/jupyterhub-k8s
-    tag: 'firedrakeSingleUser20181212-000'" > jhub-config.yaml
+    tag: 'firedrakeSingleUser20181212-000'
+  storage:
+    type: none" > jhub-config.yaml
+
 
 helm upgrade --install jupyterhub jupyterhub/jupyterhub --namespace jupyterhub --version 0.7.0   --values jhub-config.yaml
 
