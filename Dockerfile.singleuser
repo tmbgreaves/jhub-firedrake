@@ -50,4 +50,6 @@ RUN bash -c "source activate firedrake && python -m ipykernel install --name fir
 # Complete the environment, and leave the container in a state ready for jhub
 RUN bash -c "source activate firedrake && pip install mpltools"
 WORKDIR /home/jovyan
+RUN cp -r /opt/conda/envs/firedrake/firedrake-venv/src/firedrake/docs/notebooks/* .
+RUN rmdir work
 ENV OMPI_MCA_btl=tcp,self
