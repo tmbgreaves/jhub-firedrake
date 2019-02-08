@@ -93,8 +93,14 @@ while [[ ! $(kubectl --namespace kube-system get pods | grep tiller-deploy | gre
 
 helm upgrade --install jupyterhub jupyterhub/jupyterhub --namespace jupyterhub --version 0.7.0   --values jhub-config.yaml
 
+# The first install will time out whilst images pull. We need to wait for images
+# to complete pulling, then run the install again.
+while [[ ! $(kubectl --namespace jupyterhub get pods | grep hook-image-awaiter | grep Completed ) ]] ; do echo -n $(date) ; echo " Waiting for images to pull" ; sleep 60 ; done
+
+helm upgrade --install jupyterhub jupyterhub/jupyterhub --namespace jupyterhub --version 0.7.0   --values jhub-config.yaml
+
 # Pause for public IP to initialise
-while [[ ! $(az network public-ip list --resource-group MC_${myName}_${myName}_${azureRegion} --output table | awk 'NF' ) ]] ; do echo -n $(date) ; echo " Waiting for public IP" ; sleep 10 ; done
+while [[ ! $(az network public-ip list --resource-group MC_${myName}_${myName}_${azureRegion} --output table | awk 'NF' ) ]] ; do echo -n $(date) ; echo " Waiting for public IP" ; sleep 60 ; done
 
 export ipAddress=$(az network public-ip list --resource-group MC_${myName}_${myName}_${azureRegion} | grep ipAddress | awk -F\" '{print $4}')
 export ipName=$(az network public-ip list --query "[?ipAddress!=null]|[?contains(ipAddress, '${ipAddress}')].[name]" --output tsv | uniq)
