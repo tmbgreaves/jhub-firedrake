@@ -8,7 +8,7 @@ export costCentre=project
 export Owner=username
 export Creator=username
 
-az ad sp create-for-rbac --skip-assignment >> sp.out
+az ad sp create-for-rbac --skip-assignment > sp.out
 
 cat sp.out
 
@@ -17,18 +17,18 @@ export clientSecret=`grep password sp.out | awk -F\" '{print $4}'`
 
 export resourceGroup=${myName}
 
-az group create --name=${myName} --location=${azureRegion} --tags costCentre=${costCentre} Owner=${Owner} Creator=${Creator} --output table >> resgroup.out
+az group create --name=${myName} --location=${azureRegion} --tags costCentre=${costCentre} Owner=${Owner} Creator=${Creator} --output table > resgroup.out
 cat resgroup.out
 
 export aksNodeCount=3
 export kubernetesVersion=1.11.5
 
-az aks create --resource-group ${myName} --name ${myName} --node-count ${aksNodeCount} --kubernetes-version ${kubernetesVersion} --service-principal ${servicePrincipal} --client-secret ${clientSecret} --generate-ssh-keys >> aksCreate.out
+az aks create --resource-group ${myName} --name ${myName} --node-count ${aksNodeCount} --kubernetes-version ${kubernetesVersion} --service-principal ${servicePrincipal} --client-secret ${clientSecret} --generate-ssh-keys > aksCreate.out
 cat aksCreate.out
 
 export existingTags=$(az group show --name MC_${myName}_${myName}_${azureRegion} --query tags | tr -d '"{},' | sed 's/: /=/g')
 
-az group update --tags ${existingTags} costCentre=${costCentre} Owner=${Owner} Creator=${Creator} --name MC_${myName}_${myName}_${azureRegion} >> newtags.out
+az group update --tags ${existingTags} costCentre=${costCentre} Owner=${Owner} Creator=${Creator} --name MC_${myName}_${myName}_${azureRegion} > newtags.out
 cat newtags.out
 
 rm -rf ~/.kube/ 
