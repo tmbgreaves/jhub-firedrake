@@ -23,7 +23,7 @@ cat resgroup.out
 export aksNodeCount=3
 export kubernetesVersion=1.12.5
 
-az aks create --resource-group ${myName} --name ${myName} --node-count ${aksNodeCount} --kubernetes-version ${kubernetesVersion} --service-principal ${servicePrincipal} --client-secret ${clientSecret} --generate-ssh-keys > aksCreate.out
+az aks create --location ${azureRegion} --resource-group ${myName} --name ${myName} --node-count ${aksNodeCount} --kubernetes-version ${kubernetesVersion} --service-principal ${servicePrincipal} --client-secret ${clientSecret} --generate-ssh-keys > aksCreate.out
 cat aksCreate.out
 
 export existingTags=$(az group show --name MC_${myName}_${myName}_${azureRegion} --query tags | tr -d '"{},' | sed 's/: /=/g')
