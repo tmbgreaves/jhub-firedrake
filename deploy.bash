@@ -91,6 +91,8 @@ singleuser:
 # Pause for tiller to initialise
 while [[ ! $(kubectl --namespace kube-system get pods | grep tiller-deploy | grep Running) ]] ; do echo -n $(date) ; echo " Waiting for Tiller to initialise" ; sleep 10 ; done
 
+kubectl --namespace kube-system get pods
+
 helm upgrade --install jupyterhub jupyterhub/jupyterhub --namespace jupyterhub --version 0.7.0   --values jhub-config.yaml
 
 # The first install will time out whilst images pull. We need to wait for images
@@ -106,3 +108,5 @@ export ipAddress=$(az network public-ip list --resource-group MC_${myName}_${myN
 export ipName=$(az network public-ip list --query "[?ipAddress!=null]|[?contains(ipAddress, '${ipAddress}')].[name]" --output tsv | uniq)
 
 az network public-ip update --resource-group MC_${myName}_${myName}_${azureRegion} --name  ${ipName} --dns-name ${myName}
+
+kubectl --namespace jupyterhub get pods
