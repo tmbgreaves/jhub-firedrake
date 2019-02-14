@@ -21,7 +21,7 @@ az group create --name=${myName} --location=${azureRegion} --tags costCentre=${c
 cat resgroup.out
 
 export aksNodeCount=3
-export kubernetesVersion=1.12.5
+export kubernetesVersion=1.11.7
 
 az aks create --location ${azureRegion} --resource-group ${myName} --name ${myName} --node-count ${aksNodeCount} --kubernetes-version ${kubernetesVersion} --service-principal ${servicePrincipal} --client-secret ${clientSecret} --generate-ssh-keys > aksCreate.out
 cat aksCreate.out
