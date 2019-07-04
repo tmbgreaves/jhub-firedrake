@@ -1,4 +1,4 @@
-## Obsoleted by [dham's fork](https://github.com/dham/jhub-firedrake)
+## Obsoleted by [@dham's fork](https://github.com/dham/jhub-firedrake)
 
 * Dockerfile.singleuser
 
